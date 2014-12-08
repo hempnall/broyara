@@ -58,7 +58,7 @@ Yara::Yara(RecordVal* args, File* file, const char* arg_kind)
 		// std::cout << "\n2=" << str2 << std::endl;
 
 		
-		const char* rules_file_name = "/Users/jameshook/dev/src/bro/test.rule_c";
+		const char* rules_file_name = "/path/to/bro/test.rule_c";
 
 		if (ERROR_SUCCESS != yr_rules_load(rules_file_name,&yr_rules_))	{
 			throw "unable to load yara rules";
