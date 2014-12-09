@@ -36,7 +36,7 @@ redef record Files::AnalyzerArgs +=
 
 event file_new(f: fa_file)
     {
-        Files::add_analyzer(f, Files::ANALYZER_YARA,[$yara_rules_file="/Users/jameshook/dev/src/bro/test.rule_c"]);
+        Files::add_analyzer(f, Files::ANALYZER_YARA,[$yara_rules_file="/path/to/test.rule_c"]);
     }
 
 
