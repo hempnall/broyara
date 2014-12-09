@@ -27,7 +27,7 @@ else ()
     target_link_libraries(bro ${bro_SUBDIRS} ${brodeps} ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS} yara)
 endif ()
 ```
-You can run the yara rule analyser with a bro file like such:
+You can run the yara rule analyser with a bro file like such - we assume the rule file is compiled:
 ```
 redef record Files::AnalyzerArgs += 
 	{
