@@ -2,7 +2,7 @@ include(BroPlugin)
 
 include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_BINARY_DIR}
-                           "/Users/jameshook/dev/src/yara-3.2.0/libyara/include"
+                           "<yara_src>/yara-3.2.0/libyara/include"
                            )
 
 

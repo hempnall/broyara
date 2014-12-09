@@ -42,6 +42,7 @@ Yara::Yara(RecordVal* args, File* file, const char* arg_kind)
 		const u_char* str1 = args->Lookup("yara_rules_file")->AsStringVal()->Bytes();
 		const char* rules_file_name = (const char*) str1;//"
 
+
 		if (ERROR_SUCCESS != yr_rules_load(rules_file_name,&yr_rules_))	{
 			throw "unable to load yara rules";
 		}
