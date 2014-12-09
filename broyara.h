@@ -52,13 +52,12 @@ public:
 
 	static file_analysis::Analyzer* Instantiate(RecordVal* args, File* file)
 		{ 
-			std::cout << "Instantiate:" << std::endl;
 			return new Yara(args,file,"yara");
 			// return file_yarahash ? new YARA(args, file) : 0; 
 		}
 
 
-	void raiseEvent(const char* messageText);
+	void raiseEvent(int message,void* message_data);
 
 
 protected:

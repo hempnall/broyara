@@ -1,2 +1,2 @@
 
-event file_yaraalert%(f: fa_file, rules_file: string%);
+event file_yaraalert%(f: fa_file, rule_name: string%);

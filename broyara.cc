@@ -21,19 +21,7 @@ int callback_function(
 	}
 
 	Yara* yara_callback_obj = static_cast<Yara*>(user_data);
-
-
-	if (CALLBACK_MSG_RULE_MATCHING == message)	{
-		yara_callback_obj->raiseEvent("RULE MATCH"); 
-	} else if (CALLBACK_MSG_RULE_NOT_MATCHING == message)	{
-		yara_callback_obj->raiseEvent("RULE NOT MATCH"); 
-	} else if (CALLBACK_MSG_SCAN_FINISHED == message)	{
-		yara_callback_obj->raiseEvent("RULE SCAN FINISHED"); 
-	} else if (CALLBACK_MSG_IMPORT_MODULE == message)	{
-		yara_callback_obj->raiseEvent("RULE IMPORT MODULE"); 
-	} else {
-		yara_callback_obj->raiseEvent("*** WHAT?!!?!!?? ***"); 
-	}
+	yara_callback_obj->raiseEvent(message,message_data);
 
 	return ERROR_SUCCESS; // what are you meant to return from a callback function??
 
@@ -51,14 +39,8 @@ Yara::Yara(RecordVal* args, File* file, const char* arg_kind)
 			throw "unable to initialize yara";
 		}
 		
-		// const u_char* str1 = args->Lookup(0)->AsStringVal()->Bytes();
-		// const u_char* str2 = args->Lookup(1)->AsStringVal()->Bytes();
-
-		// std::cout << "\n1=" << str1 << std::endl;
-		// std::cout << "\n2=" << str2 << std::endl;
-
-		
-		const char* rules_file_name = "/Users/jameshook/dev/src/bro/test.rule_c";
+		const u_char* str1 = args->Lookup("yara_rules_file")->AsStringVal()->Bytes();
+		const char* rules_file_name = (const char*) str1;//"
 
 		if (ERROR_SUCCESS != yr_rules_load(rules_file_name,&yr_rules_))	{
 			throw "unable to load yara rules";
@@ -105,9 +87,6 @@ void Yara::Finalize()
 		}
 
 
-		//std::cout << "\nFileSize=" << result_file.size() << std::endl;
-
-
 		int res = yr_rules_scan_mem(
 			yr_rules_,
 			(uint8_t *) result_file.c_str(),
@@ -127,19 +106,32 @@ void Yara::Finalize()
 	}
 
 
-void Yara::raiseEvent(const char* messageText)	{
+void Yara::raiseEvent(
+	int message,
+    void* message_data)	
+{
 
+
+	if (CALLBACK_MSG_RULE_MATCHING != message)	{
+		return;
+	}
+
+	if (0 == message_data)	{
+		return;
+	}
 
 	if (0 != file_yaraalert)	{
 
 		val_list* vl = new val_list();
 		vl->append(GetFile()->GetVal()->Ref());
-		vl->append(new StringVal(messageText));
+
+		YR_RULE* yrrule = static_cast<YR_RULE*>(message_data);
+		vl->append(new StringVal(yrrule->identifier));
 		mgr.QueueEvent(file_yaraalert, vl);
 
 	}
 
-	std::cout << messageText << std::endl;
+
 
 
 }
